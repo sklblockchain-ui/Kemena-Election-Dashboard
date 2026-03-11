@@ -1,6 +1,6 @@
-// -----------------------------
-// ELECTION RESULTS
-// -----------------------------
+// ================================
+// LOAD ELECTION RESULTS
+// ================================
 
 Papa.parse("SARAWAK_2021_ELECTION_RESULTS.csv", {
 
@@ -9,39 +9,44 @@ header: true,
 
 complete: function(results) {
 
-let row = results.data[0]
+let data = results.data
 
-let parties = [
-"GPS",
-"PH",
-"PSB",
-"PBK",
-"ASPIRASI"
-]
+// find the row containing Kemena
+let kemenaRow = data.find(row =>
+Object.values(row).join(" ").toLowerCase().includes("kemena")
+)
 
-let votes = [
-row["GPS VOTE"],
-row["PH VOTE"],
-row["PSB CANDIDATE VOTE"],
-row["PBK VOTE"],
-row["ASPIRASI VOTE"]
-]
+if(!kemenaRow){
+console.log("Kemena row not found")
+return
+}
+
+// automatically detect vote columns
+let parties = []
+let votes = []
+
+Object.keys(kemenaRow).forEach(col => {
+
+if(col.toLowerCase().includes("vote")){
+
+parties.push(col.replace(" VOTE",""))
+votes.push(Number(kemenaRow[col]))
+
+}
+
+})
 
 const ctx = document.getElementById("voteChart")
 
-new Chart(ctx, {
+new Chart(ctx,{
+type:"bar",
 
-type: "bar",
-
-data: {
-
-labels: parties,
-
-datasets: [{
-label: "Votes",
-data: votes
+data:{
+labels:parties,
+datasets:[{
+label:"Votes",
+data:votes
 }]
-
 }
 
 })
@@ -51,51 +56,52 @@ data: votes
 })
 
 
-// -----------------------------
-// ETHNIC COMPOSITION
-// -----------------------------
+// ================================
+// LOAD ETHNIC COMPOSITION
+// ================================
 
 Papa.parse("SARAWAK_2021_DUN_COMPOSITION.csv", {
 
-download: true,
-header: true,
+download:true,
+header:true,
 
-complete: function(results) {
+complete:function(results){
 
-let row = results.data[0]
+let data = results.data
 
-let ethnicLabels = [
-"Malay/Melanau",
-"Chinese",
-"Iban",
-"Bidayuh",
-"Orang Ulu",
-"Others"
-]
+let kemenaRow = data.find(row =>
+Object.values(row).join(" ").toLowerCase().includes("kemena")
+)
 
-let ethnicData = [
-row["MALAY/MELANAU (%)"],
-row["CHINESE (%)"],
-row["IBAN (%)"],
-row["BIDAYUH (%)"],
-row["ORANG ULU (%)"],
-row["OTHERS (%)"]
-]
+if(!kemenaRow){
+console.log("Kemena composition not found")
+return
+}
 
-const ctx2 = document.getElementById("ethnicChart")
+let labels=[]
+let values=[]
 
-new Chart(ctx2, {
+Object.keys(kemenaRow).forEach(col=>{
 
-type: "pie",
+if(col.includes("%")){
 
-data: {
+labels.push(col.replace(" (%)",""))
+values.push(Number(kemenaRow[col]))
 
-labels: ethnicLabels,
+}
 
-datasets: [{
-data: ethnicData
+})
+
+const ctx2=document.getElementById("ethnicChart")
+
+new Chart(ctx2,{
+type:"pie",
+
+data:{
+labels:labels,
+datasets:[{
+data:values
 }]
-
 }
 
 })
