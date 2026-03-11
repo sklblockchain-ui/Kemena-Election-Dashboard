@@ -3,7 +3,7 @@
 
 <head>
 
-<title>N69 Kemena Election Profile</title>
+<title>N69 Kemena Political Dashboard</title>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.2/papaparse.min.js"></script>
@@ -14,12 +14,36 @@
 
 <body>
 
-<h1>N69 Kemena Election Profile</h1>
+<h1>N69 Kemena Political Intelligence Dashboard</h1>
+
+<div class="cards">
+
+<div class="card">
+<h3>Winner</h3>
+<p id="winner"></p>
+</div>
+
+<div class="card">
+<h3>Majority</h3>
+<p id="majority"></p>
+</div>
+
+<div class="card">
+<h3>Turnout</h3>
+<p id="turnout"></p>
+</div>
+
+<div class="card">
+<h3>Urban/Rural</h3>
+<p id="urban"></p>
+</div>
+
+</div>
 
 <div class="container">
 
 <div class="chart-box">
-<h2>Election Result</h2>
+<h2>Party Votes</h2>
 <canvas id="voteChart"></canvas>
 </div>
 
@@ -28,10 +52,19 @@
 <canvas id="ethnicChart"></canvas>
 </div>
 
+<div class="chart-box">
+<h2>Age Distribution</h2>
+<canvas id="ageChart"></canvas>
+</div>
+
+<div class="chart-box">
+<h2>Gender Distribution</h2>
+<canvas id="genderChart"></canvas>
+</div>
+
 </div>
 
 <script src="script.js"></script>
 
 </body>
-
 </html>
