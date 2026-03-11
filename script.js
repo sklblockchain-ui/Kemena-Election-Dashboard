@@ -1,25 +1,36 @@
-const voteChart = document.getElementById('voteChart');
+Papa.parse("SARAWAK_2021_ELECTION_RESULTS.csv", {
 
-new Chart(voteChart, {
+download: true,
+header: true,
+
+complete: function(results) {
+
+let data = results.data
+
+// filter for N69 Kemena
+
+let kemena = data.filter(row => row.DUN === "N69")
+
+let labels = kemena.map(row => row.PARTY)
+let votes = kemena.map(row => row.VOTES)
+
+const ctx = document.getElementById('voteChart')
+
+new Chart(ctx, {
 
 type: 'bar',
 
 data: {
-
-labels: ['GPS','PH','PSB','Others'],
+labels: labels,
 
 datasets: [{
 label: 'Votes',
-data: [12000,4500,3000,1000]
-
+data: votes
 }]
+}
 
-},
-
-options: {
-
-responsive:true
+})
 
 }
 
-});
+})
